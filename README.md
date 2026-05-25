@@ -1,23 +1,56 @@
-# PanoWorld-LRM Inference
+# PanoWorld: A Generative Spatial World Model for Consistent Whole-House Panorama Synthesis
 
-This package contains the inference-only release of the PanoWorld-LRM component used for whole-house reconstruction from panorama inputs.
+<p align="center">
+  <strong>Jinrang Jia, Zhenjia Li, Yijiang Hu, Yifeng Shi</strong>
+</p>
 
-## What is included
+<p align="center">
+  <strong>Ke Holdings Inc.</strong>
+</p>
 
-- Inference entrypoint: `inference.py`
-- Model definition and runtime dependencies required by inference
-- Two example configs:
-  - `configs/inference_1024_512.yaml`
-  - `configs/inference_2048_1024.yaml`
-- Evaluation file lists under `data_realsee3D/`
+<p align="center">
+  <a href="https://arxiv.org/pdf/2605.17916"><img alt="arXiv" src="https://img.shields.io/badge/arXiv-2605.17916-b31b1b.svg"></a>
+  <a href="https://jjrcn.github.io/PanoWorld-project-home/"><img alt="Project Page" src="https://img.shields.io/badge/Project-Page-2f80ed.svg"></a>
+  <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/License-MIT-green.svg"></a>
+</p>
 
-Training scripts, WandB setup, API keys, and other non-inference artifacts have been removed.
+PanoWorld is a generative spatial world model for consistent whole-house panorama synthesis. Given a floorplan and a style reference, it autoregressively generates node-based 360-degree panoramas that align with practical VR-tour navigation while preserving cross-view geometry and material consistency across an entire house.
 
-## Quick start
+This repository currently releases the **PanoWorld-LRM inference code**, together with model checkpoints and evaluation data links. More components of the full PanoWorld pipeline will be released progressively.
 
-1. Install the dependencies listed in `requirements.txt`.
-2. Update `ckpt_path`, `data.data_path`, and `inference.out_dir` in the chosen config if needed.
-3. Run inference:
+<p align="center">
+  <img src="assets/img1_good2.png" alt="PanoWorld main figure" width="95%">
+</p>
+
+## Overview
+
+- Whole-house synthesis is formulated as autoregressive generation over discrete panorama viewpoints, matching real VR-tour navigation.
+- A floorplan-derived 3D shell provides global structural guidance for multi-room layout consistency.
+- A dynamic 3DGS cache serves as renderable spatial memory, preserving cross-node geometry and material identity.
+- PanoWorld-LRM reconstructs metric-scale multi-room geometry from panoramic observations for high-quality whole-house rendering and evaluation.
+
+## News
+
+- `2026-05-19`: Paper released and project page launched.
+- `2026-05-25`: Open-sourced the PanoWorld-LRM inference code, checkpoints (including `1024x512` and `2048x1024` model weights), and evaluation data (`50` RealSee3D scenes).
+- `Coming Soon`: PanoWorld-LRM training code, inference and training code for the PanoWorld 2D generator, the full PanoWorld pipeline, additional evaluation data, and more.
+
+## Inference
+
+### Quick Start
+
+1. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+The released inference package is tested against the `mvp` conda environment
+(`Python 3.10.18`, `PyTorch 2.3.1`, `TorchVision 0.18.1`, `CUDA 12.1`).
+
+2. Check the selected config and update `ckpt_path`, `data.data_path`, and `inference.out_dir` if needed.
+
+3. Launch inference with one of the provided scripts:
 
 ```bash
 bash infer_512.sh
@@ -29,13 +62,57 @@ or
 bash infer_1024.sh
 ```
 
-You can also launch directly:
+You can also run inference directly with:
 
 ```bash
 python inference.py --config configs/inference_1024_512.yaml
 ```
 
-## Notes
+### Released Files
 
-- `training.train_stage` is still kept in the config because the checkpoint layout depends on it.
-- The code path is intentionally kept numerically aligned with the original inference implementation; the cleanup focuses on packaging, unused code removal, and inference-side runtime simplification.
+- `inference.py`: main inference entrypoint
+- `model.py`, `transformer.py`, `dpt_head.py`, `prope_custom.py`: model definition
+- `dataset.py`, `utils.py`, `metric_utils.py`: dataset loading and evaluation helpers
+- `configs/`: released inference configs for `1024x512` and `2048x1024`
+- `data_realsee3D/`: released RealSee3D evaluation file lists
+
+## Model Checkpoints
+
+| Component | Resolution | Link | Notes |
+| --- | --- | --- | --- |
+| PanoWorld-LRM | `1024x512` | [Checkpoint](https://huggingface.co/JiaJinrang/PanoWorld/blob/main/model_ckpt/ckpt_panoworld_lrm_1024_512.pt) | Released |
+| PanoWorld-LRM | `2048x1024` | [Checkpoint](https://huggingface.co/JiaJinrang/PanoWorld/blob/main/model_ckpt/ckpt_panoworld_lrm_2048_1024.ckpt) | Released |
+| PanoWorld 2D Generator | Coming Soon | Coming Soon | Coming Soon |
+
+## Data
+
+| Split | Dataset | Link | Notes |
+| --- | --- | --- | --- |
+| Training | 3D Front | [Download](https://tianchi.aliyun.com/dataset/65347) | Data processing scripts: Coming Soon |
+| Training | RealSee3D | [realsee-developer/RealSee3D](https://github.com/realsee-developer/RealSee3D) | Data processing scripts: Coming Soon |
+| Evaluation | RealSee3D | [Hugging Face Dataset](https://huggingface.co/datasets/JiaJinrang/PanoWorld/tree/main) | Released, including `50` RealSee3D scenes |
+| Evaluation | Private scene data | Coming Soon | Coming Soon |
+
+## Citation
+
+If you find this project useful, please cite:
+
+```bibtex
+@misc{jia2026panoworldgenerativespatialworld,
+      title={PanoWorld: A Generative Spatial World Model for Consistent Whole-House Panorama Synthesis},
+      author={Jinrang Jia and Zhenjia Li and Yijiang Hu and Yifeng Shi},
+      year={2026},
+      eprint={2605.17916},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2605.17916},
+}
+```
+
+## License
+
+This project is released under the MIT License. See [LICENSE](LICENSE) for details.
+
+## Acknowledgements
+
+We would like to thank [Gynjn/MVP](https://github.com/Gynjn/MVP) and [QwenLM/Qwen-Image](https://github.com/QwenLM/Qwen-Image) for their inspiring open-source contributions.
