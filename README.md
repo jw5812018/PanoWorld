@@ -48,7 +48,7 @@ pip install -r requirements.txt
 The released inference package is tested with
 `Python 3.10.18`, `PyTorch 2.3.1`, `TorchVision 0.18.1`, and `CUDA 12.1`.
 
-2. Check the selected config and update `ckpt_path`, `data.data_path`, and `inference.out_dir` if needed.
+2. Check the selected config and update `data.root_data_dir`, `data.data_path`, `inference.ckpt_path`, and `inference.out_dir` if needed.
 
 3. Launch inference with one of the provided scripts:
 
