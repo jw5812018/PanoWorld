@@ -29,7 +29,7 @@ model:
     min_dist: 0.1
 
 data:
-  root_data_dir: "/mnt/xyz_data_tj/user/jiajinrang001/panoworld_hug/RealSee3D_eval_data"
+  root_data_dir: "/Your/Path/to/RealSee3D_eval_data"
   data_path: "data_realsee3D/realsee3D_1024_1024_20260507_whole_room_map_json_eval_8views.txt"
   # data_path: "data_realsee3D/realsee3D_1024_1024_20260507_whole_room_map_json_eval_12views.txt"
   square_crop: true # Whether to crop perspective images to a square before resizing
