@@ -16,9 +16,7 @@
 
 PanoWorld is a generative spatial world model for consistent whole-house panorama synthesis. Given a floorplan and a style reference, it autoregressively generates node-based 360-degree panoramas that align with practical VR-tour navigation while preserving cross-view geometry and material consistency across an entire house.
 
-To combine the visual quality of 2D generation with the spatial consistency of 3D scene modeling, PanoWorld uses a floorplan-derived 3D shell as global geometric guidance and a dynamic 3D Gaussian Splatting cache as renderable spatial memory. The framework further introduces a feed-forward panoramic LRM for metric-scale multi-room 360-degree inputs, Room-aware Group Attention to suppress cross-room interference, and a topology-aware progressive caching strategy that avoids repeatedly reconstructing the full scene history.
-
-This repository is the official project for the paper. Training and inference code, together with evaluation data, will be released soon.
+This repository currently releases the **PanoWorld-LRM inference code**, together with model checkpoints and evaluation data links. More components of the full PanoWorld pipeline will be released progressively.
 
 <p align="center">
   <img src="assets/img1_good2.png" alt="PanoWorld main figure" width="95%">
@@ -29,11 +27,68 @@ This repository is the official project for the paper. Training and inference co
 - Whole-house synthesis is formulated as autoregressive generation over discrete panorama viewpoints, matching real VR-tour navigation.
 - A floorplan-derived 3D shell provides global structural guidance for multi-room layout consistency.
 - A dynamic 3DGS cache serves as renderable spatial memory, preserving cross-node geometry and material identity.
-- Room-aware panoramic LRM and topology-aware progressive caching improve scalability for metric-scale, multi-room synthesis.
+- PanoWorld-LRM reconstructs metric-scale multi-room geometry from panoramic observations for high-quality whole-house rendering and evaluation.
 
 ## News
 
-- `2026-05-19`: Paper released and project page launched. Training/inference code and evaluation data will be open-sourced soon.
+- `2026-05-19`: Paper released and project page launched.
+- `2026-05-25`: Open-sourced the PanoWorld-LRM inference code, checkpoints (including `1024x512` and `2048x1024` model weights), and evaluation data (`50` RealSee3D scenes).
+- `Coming Soon`: PanoWorld-LRM training code, inference and training code for the PanoWorld 2D generator, the full PanoWorld pipeline, additional evaluation data, and more.
+
+## Inference
+
+### Quick Start
+
+1. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+2. Check the selected config and update `ckpt_path`, `data.data_path`, and `inference.out_dir` if needed.
+
+3. Launch inference with one of the provided scripts:
+
+```bash
+bash infer_512.sh
+```
+
+or
+
+```bash
+bash infer_1024.sh
+```
+
+You can also run inference directly with:
+
+```bash
+python inference.py --config configs/inference_1024_512.yaml
+```
+
+### Released Files
+
+- `inference.py`: main inference entrypoint
+- `model.py`, `transformer.py`, `dpt_head.py`, `prope_custom.py`: model definition
+- `dataset.py`, `utils.py`, `metric_utils.py`: dataset loading and evaluation helpers
+- `configs/`: released inference configs for `1024x512` and `2048x1024`
+- `data_realsee3D/`: released RealSee3D evaluation file lists
+
+## Model Checkpoints
+
+| Component | Resolution | Link | Notes |
+| --- | --- | --- | --- |
+| PanoWorld-LRM | `1024x512` | [Checkpoint](https://huggingface.co/JiaJinrang/PanoWorld/blob/main/model_ckpt/ckpt_panoworld_lrm_1024_512.pt) | Released |
+| PanoWorld-LRM | `2048x1024` | [Checkpoint](https://huggingface.co/JiaJinrang/PanoWorld/blob/main/model_ckpt/ckpt_panoworld_lrm_2048_1024.ckpt) | Released |
+| PanoWorld 2D Generator | Coming Soon | Coming Soon | Coming Soon |
+
+## Data
+
+| Split | Dataset | Link | Notes |
+| --- | --- | --- | --- |
+| Training | 3D Front | [Download](https://tianchi.aliyun.com/dataset/65347) | Data processing scripts: Coming Soon |
+| Training | RealSee3D | [realsee-developer/RealSee3D](https://github.com/realsee-developer/RealSee3D) | Data processing scripts: Coming Soon |
+| Evaluation | RealSee3D | [Hugging Face Dataset](https://huggingface.co/datasets/JiaJinrang/PanoWorld/tree/main) | Released, including `50` RealSee3D scenes |
+| Evaluation | Private scene data | Coming Soon | Coming Soon |
 
 ## Citation
 
@@ -54,3 +109,7 @@ If you find this project useful, please cite:
 ## License
 
 This project is released under the MIT License. See [LICENSE](LICENSE) for details.
+
+## Acknowledgements
+
+We would like to thank [Gynjn/MVP](https://github.com/Gynjn/MVP) and [QwenLM/Qwen-Image](https://github.com/QwenLM/Qwen-Image) for their inspiring open-source contributions.

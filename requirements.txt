@@ -1,0 +1,16 @@
+easydict
+einops
+gsplat
+imageio
+jaxtyping
+lpips
+numpy
+omegaconf
+opencv-python
+Pillow
+plyfile
+py360convert
+scikit-image
+scipy
+torch
+torchvision
