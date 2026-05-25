@@ -45,8 +45,8 @@ This repository currently releases the **PanoWorld-LRM inference code**, togethe
 pip install -r requirements.txt
 ```
 
-The released inference package is tested against the `mvp` conda environment
-(`Python 3.10.18`, `PyTorch 2.3.1`, `TorchVision 0.18.1`, `CUDA 12.1`).
+The released inference package is tested with
+`Python 3.10.18`, `PyTorch 2.3.1`, `TorchVision 0.18.1`, and `CUDA 12.1`.
 
 2. Check the selected config and update `ckpt_path`, `data.data_path`, and `inference.out_dir` if needed.
 
