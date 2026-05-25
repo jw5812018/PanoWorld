@@ -1,16 +1,28 @@
-easydict
-einops
-gsplat
-imageio
-jaxtyping
-lpips
-numpy
-omegaconf
-opencv-python
-Pillow
-plyfile
-py360convert
-scikit-image
-scipy
-torch
-torchvision
+# Tested against the `mvp` conda environment used for the released
+# PanoWorld-LRM inference code.
+# Reference runtime:
+# - Python 3.10.18
+# - PyTorch 2.3.1
+# - TorchVision 0.18.1
+# - CUDA 12.1
+
+torch==2.3.1
+torchvision==0.18.1
+numpy==1.26.4
+scipy==1.15.3
+opencv-python==4.7.0.72
+Pillow==10.4.0
+imageio==2.33.0
+scikit-image==0.25.2
+py360convert==1.0.4
+plyfile==1.1
+omegaconf==2.1.1
+easydict==1.13
+einops==0.8.1
+jaxtyping==0.3.1
+
+# The tested `mvp` environment uses a CUDA/PyTorch-matched gsplat wheel
+# with version `1.4.0+pt22cu121`. If that exact wheel is unavailable on
+# your machine, please install a matching gsplat build for your local
+# PyTorch/CUDA stack.
+gsplat==1.4.0
