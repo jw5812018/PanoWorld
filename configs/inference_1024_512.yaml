@@ -29,6 +29,7 @@ model:
     min_dist: 0.1
 
 data:
+  root_data_dir: "/mnt/xyz_data_tj/user/jiajinrang001/panoworld_hug/RealSee3D_eval_data"
   data_path: "data_realsee3D/realsee3D_1024_1024_20260507_whole_room_map_json_eval_8views.txt"
   # data_path: "data_realsee3D/realsee3D_1024_1024_20260507_whole_room_map_json_eval_12views.txt"
   square_crop: true # Whether to crop perspective images to a square before resizing
@@ -51,5 +52,5 @@ inference:
   num_workers: 4
   prefetch_factor: 4  
   use_tf32: true
-  ckpt_path: /Path/to/ckpt_panoworld_lrm_1024_512.pt
+  ckpt_path: /mnt/xyz_data_tj/user/jiajinrang001/MVP_exp/id16_best_512_patch_whole_room_kujiale_RealSee3D/experiments_20260328_id16_512/checkpoints/mvp_stage1/ckpt_0000000000096000.pt
   out_dir: ./inference_result/inference_1024_512_8views

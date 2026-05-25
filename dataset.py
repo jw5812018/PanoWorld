@@ -94,44 +94,15 @@ class Dataset(Dataset):
             self.config.data.update(config.data_eval)
         
         data_path_text = config.data.data_path
-        if isinstance(data_path_text, list):
-            print("Load data from list\n")
-            self.data_path = []
-            for data_path_text_single in data_path_text:
-                data_count = 0
-                multi_sample = 1
-                if "data_front3d" in data_path_text_single:
-                    multi_sample = 200
-                elif "data_realsee3D" in data_path_text_single:
-                    multi_sample = 100
+        data_root_dir = config.data.root_data_dir
 
-                data_path_list = []
-                with open(data_path_text_single, 'r') as f:
-                    for x in f:
-                        data_path_single_x = x.strip()
-                        if not data_path_single_x: # Skip empty lines
-                            continue
-                        data_path_list.append(data_path_single_x)
-                        data_count += 1
-                data_count_resample = 0
-                for i in range(multi_sample):
-                     self.data_path.extend(data_path_list)
-                     data_count_resample += data_count
-                print(f"Finish load data from: {data_path_text_single}, total: {data_count_resample}\n")
-            total_count = len(self.data_path)
-            print(f"Finish load data from list, total: {total_count}\n")
-        elif isinstance(data_path_text, str):
-            print("Load data from str\n")
-            with open(data_path_text, 'r') as f:
-                self.data_path = f.readlines()
-            self.data_path = [x.strip() for x in self.data_path]
-            self.data_path = [x for x in self.data_path if len(x) > 0]
-            total_count = len(self.data_path)
-            print(f"Finish load data from str, total: {total_count}\n")
-        else:
-            print("data_path class error.\n")
-            raise NotImplementedError
-            
+        with open(data_path_text, 'r') as f:
+            self.data_path = f.readlines()
+        self.data_path = [x.strip() for x in self.data_path]
+        self.data_path = [os.path.join(data_root_dir, x) for x in self.data_path if len(x) > 0]
+        total_count = len(self.data_path)
+        print(f"Finish load data from str, total: {total_count}\n")
+        
         if not config.get("inference", False):
             np.random.shuffle(self.data_path)
         
