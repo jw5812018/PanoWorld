@@ -52,5 +52,5 @@ inference:
   num_workers: 4
   prefetch_factor: 4  
   use_tf32: true
-  ckpt_path: /mnt/xyz_data_tj/user/jiajinrang001/MVP_exp/id16_best_512_patch_whole_room_kujiale_RealSee3D/experiments_20260328_id16_512/checkpoints/mvp_stage1/ckpt_0000000000096000.pt
+  ckpt_path: /Path/to/ckpt_panoworld_lrm_1024_512.pt
   out_dir: ./inference_result/inference_1024_512_8views
