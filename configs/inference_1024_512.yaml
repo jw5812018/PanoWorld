@@ -36,7 +36,7 @@ data:
   resize_h: 512
   resize_h_pano: 512
   sample_target_images: 6
-  viewpoint_max_view: 8
+  viewpoint_max_view: 12
   filter_top_down: false # set true to ignore the pano image top 1/5 and down 1/5
 
 training:
