@@ -106,7 +106,7 @@ You may reorganize your own data into the same format. Inference only depends on
   ...
 ```
 
-Create a TXT file listing the scenes to be processed in the same format as `realsee3D_1024_1024_20260507_whole_room_map_json_eval_8views.txt`, then set `config.data.root_data_dir` and `config.data.data_path` accordingly.
+Create a TXT file listing the scenes to be processed in the same format as `realsee3D_eval_8views.txt`, then set `config.data.root_data_dir` and `config.data.data_path` accordingly.
 
 6. The inference results will be saved in `inference.out_dir`. The `output_ply` directory can be directly visualized with `SIBR_Viewer`:
 
