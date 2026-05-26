@@ -83,6 +83,14 @@ python inference.py --config configs/inference_1024_512.yaml
 
 You may reorganize your own data into the same format or modify `dataset.py` and other related files to adapt to your data.
 
+6. The inference results will be saved in `inference.out_dir`. The `output_ply` directory can be directly visualized with `SIBR_Viewer`:
+
+```bash
+./SIBR_gaussianViewer_app -m /Path/to/output_ply
+```
+
+You may also use other viewers such as `SuperSplat`.
+
 <p align="center"><strong>Inference GPU Memory Usage</strong></p>
 
 <table align="center">
