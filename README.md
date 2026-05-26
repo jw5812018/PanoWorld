@@ -142,33 +142,6 @@ You may also use other viewers such as `SuperSplat`.
 
 <p align="center"><sub><em>Tested on NVIDIA H200. The paper uses <code>1024x512</code> for experiments and metric computation.</em></sub></p>
 
-<p align="center"><strong>PanoWorld-LRM Whole House Reconstruction Results (12 views input)</strong></p>
-
-<table align="center">
-  <tr>
-    <td align="center" width="25%">
-      <a href="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo1_web.mp4">
-        <img src="assets/gifs/panoworld-lrm-demo1.gif" alt="PanoWorld-LRM Demo 1" width="100%">
-      </a>
-    </td>
-    <td align="center" width="25%">
-      <a href="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo2_web.mp4">
-        <img src="assets/gifs/panoworld-lrm-demo2.gif" alt="PanoWorld-LRM Demo 2" width="100%">
-      </a>
-    </td>
-    <td align="center" width="25%">
-      <a href="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo3_web.mp4">
-        <img src="assets/gifs/panoworld-lrm-demo3.gif" alt="PanoWorld-LRM Demo 3" width="100%">
-      </a>
-    </td>
-    <td align="center" width="25%">
-      <a href="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo4_web.mp4">
-        <img src="assets/gifs/panoworld-lrm-demo4.gif" alt="PanoWorld-LRM Demo 4" width="100%">
-      </a>
-    </td>
-  </tr>
-</table>
-
 #### PanoWorld 2D Generator
 
 Coming Soon
