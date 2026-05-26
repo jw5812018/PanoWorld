@@ -80,14 +80,31 @@ python inference.py --config configs/inference_1024_512.yaml
 
 You may reorganize your own data into the same format or modify `dataset.py` and other related files to adapt to your data.
 
-**Inference GPU Memory Usage**
+<p align="center"><strong>Inference GPU Memory Usage</strong></p>
 
-|                | 1024x512 | 2048x1024 |
-| --- | ---: | ---: |
-| 8-views | 28061MiB | 117143MiB |
-| 12-views | 45449MiB | OOM |
+<table align="center">
+  <thead>
+    <tr>
+      <th align="center"></th>
+      <th align="center">1024x512</th>
+      <th align="center">2048x1024</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">8-views</td>
+      <td align="center">28061MiB</td>
+      <td align="center">117143MiB</td>
+    </tr>
+    <tr>
+      <td align="center">12-views</td>
+      <td align="center">45449MiB</td>
+      <td align="center">OOM</td>
+    </tr>
+  </tbody>
+</table>
 
-Tested on NVIDIA H200. The paper uses `1024x512` for experiments and metric computation.
+<p align="center"><sub><em>Tested on NVIDIA H200. The paper uses <code>1024x512</code> for experiments and metric computation.</em></sub></p>
 
 #### PanoWorld 2D Generator
 
