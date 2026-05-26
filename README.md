@@ -33,7 +33,11 @@ This repository currently releases the **PanoWorld-LRM inference code**, togethe
 
 - `2026-05-19`: Paper released and project page launched.
 - `2026-05-25`: Open-sourced the PanoWorld-LRM inference code, checkpoints (including `1024x512` and `2048x1024` model weights), and evaluation data (`50` RealSee3D scenes).
-- `Coming Soon`: PanoWorld-LRM training code, inference and training code for the PanoWorld 2D generator, the full PanoWorld pipeline, additional evaluation data, and more.
+- `Coming Soon`: PanoWorld 2D generator inference code and checkpoints.
+- `Coming Soon`: Private scene data for evaluating PanoWorld panorama synthesis.
+- `Coming Soon`: PanoWorld-LRM training code.
+- `Coming Soon`: PanoWorld 2D generator training code.
+- `Coming Soon`: Full PanoWorld pipeline, visualization, and evaluation code.
 
 ## Inference
 
