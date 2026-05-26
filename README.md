@@ -50,9 +50,7 @@ pip install -r requirements.txt
 The released inference package is tested with
 `Python 3.10.18`, `PyTorch 2.3.1`, `TorchVision 0.18.1`, and `CUDA 12.1`.
 
-2. Download the prepared RealSee3D inference and evaluation data:
-
-[Download](https://huggingface.co/datasets/JiaJinrang/PanoWorld/tree/main)
+2. Download the prepared RealSee3D inference and evaluation data ([Download](https://huggingface.co/datasets/JiaJinrang/PanoWorld/tree/main)):
 
 3. Check the selected config and update `data.root_data_dir`, `data.data_path`, `inference.ckpt_path`, and `inference.out_dir` if needed.
 
