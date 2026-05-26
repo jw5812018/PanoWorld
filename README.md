@@ -64,13 +64,13 @@ The released inference package is tested with
 4. Launch inference with one of the provided scripts:
 
 ```bash
-bash infer_512.sh
+bash infer_1024_512.sh
 ```
 
 or
 
 ```bash
-bash infer_1024.sh
+bash infer_2048_1024.sh
 ```
 
 You can also run inference directly with:
