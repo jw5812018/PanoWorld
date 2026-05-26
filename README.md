@@ -145,4 +145,4 @@ This project is released under the MIT License. See [LICENSE](LICENSE) for detai
 
 ## Acknowledgements
 
-We would like to thank [Gynjn/MVP](https://github.com/Gynjn/MVP) and [QwenLM/Qwen-Image](https://github.com/QwenLM/Qwen-Image) for their inspiring open-source contributions.
+We would like to thank [Gynjn/MVP](https://github.com/Gynjn/MVP), [QwenLM/Qwen-Image](https://github.com/QwenLM/Qwen-Image), [realsee-developer/RealSee3D](https://github.com/realsee-developer/RealSee3D), and [3D Front](https://tianchi.aliyun.com/dataset/65347) for their inspiring open-source contributions.
