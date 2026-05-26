@@ -81,7 +81,32 @@ python inference.py --config configs/inference_1024_512.yaml
 
 5. If you would like to run inference on your own data, please refer to the dataset format description ([Here](https://huggingface.co/datasets/JiaJinrang/PanoWorld)):
 
-You may reorganize your own data into the same format or modify `dataset.py` and other related files to adapt to your data.
+You may reorganize your own data into the same format. Inference only depends on the panoramic image `panoImage_1600.jpg`, the camera extrinsics `extrinsics.txt`, and the viewpoint-to-room grouping defined in `map.json`. Organize your data as follows:
+
+```text
+<your_data_root>
+  <scene_name1>
+    map.json
+    viewpoints
+      <view_name1>
+        panoImage_1600.jpg   # panorama image, w:h = 2:1; the resolution is not strictly limited to 1600x800
+        extrinsics.txt       # 4x4 camera extrinsic matrix (c2w) for this viewpoint
+      <view_name2>
+        panoImage_1600.jpg   # panorama image, w:h = 2:1
+        extrinsics.txt       # 4x4 camera extrinsic matrix (c2w) for this viewpoint
+      <view_name3>
+        panoImage_1600.jpg   # panorama image, w:h = 2:1
+        extrinsics.txt       # 4x4 camera extrinsic matrix (c2w) for this viewpoint
+      <view_name4>
+        panoImage_1600.jpg   # panorama image, w:h = 2:1
+        extrinsics.txt       # 4x4 camera extrinsic matrix (c2w) for this viewpoint
+      ...
+  <scene_name2>
+  <scene_name3>
+  ...
+```
+
+Create a TXT file listing the scenes to be processed in the same format as `realsee3D_1024_1024_20260507_whole_room_map_json_eval_8views.txt`, then set `config.data.root_data_dir` and `config.data.data_path` accordingly.
 
 6. The inference results will be saved in `inference.out_dir`. The `output_ply` directory can be directly visualized with `SIBR_Viewer`:
 
