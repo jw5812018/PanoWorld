@@ -22,7 +22,7 @@ PanoWorld is a generative spatial world model for consistent whole-house panoram
 This repository currently releases the **PanoWorld-LRM inference code**, together with model checkpoints and evaluation data links. More components of the full PanoWorld pipeline will be released progressively.
 
 <p align="center">
-  <img src="assets/img1_good2.png" alt="PanoWorld main figure" width="95%">
+  <img src="assets/panoworld.png" alt="PanoWorld main figure" width="95%">
 </p>
 
 ## Overview
