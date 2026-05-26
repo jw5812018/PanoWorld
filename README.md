@@ -106,6 +106,7 @@ Coming Soon
 | --- | --- | --- | --- | --- |
 | Training | 3D Front | Train LRM and 2D generator | [Download](https://tianchi.aliyun.com/dataset/65347) | Data processing scripts: Coming Soon |
 | Training | RealSee3D | Train LRM and 2D generator | [Download](https://github.com/realsee-developer/RealSee3D) | Data processing scripts: Coming Soon |
+| Training | Private 2D panoramas | 2D generator only | - | Private |
 | Evaluation | RealSee3D | Evaluate LRM | [Download](https://huggingface.co/datasets/JiaJinrang/PanoWorld/tree/main) | Released, including `50` RealSee3D scenes |
 | Evaluation | Private scene data | Evaluate PanoWorld panorama synthesis | Coming Soon | Coming Soon |
 
