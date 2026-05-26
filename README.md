@@ -96,12 +96,12 @@ You may reorganize your own data into the same format or modify `dataset.py` and
   <tbody>
     <tr>
       <td align="center">8-views</td>
-      <td align="center">28061MiB</td>
-      <td align="center">117143MiB</td>
+      <td align="center">27507MiB</td>
+      <td align="center">108369MiB</td>
     </tr>
     <tr>
       <td align="center">12-views</td>
-      <td align="center">45449MiB</td>
+      <td align="center">40285MiB</td>
       <td align="center">OOM</td>
     </tr>
   </tbody>
