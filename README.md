@@ -39,6 +39,8 @@ This repository currently releases the **PanoWorld-LRM inference code**, togethe
 
 ### Quick Start
 
+#### PanoWorld-LRM
+
 1. Install dependencies:
 
 ```bash
@@ -48,9 +50,13 @@ pip install -r requirements.txt
 The released inference package is tested with
 `Python 3.10.18`, `PyTorch 2.3.1`, `TorchVision 0.18.1`, and `CUDA 12.1`.
 
-2. Check the selected config and update `data.root_data_dir`, `data.data_path`, `inference.ckpt_path`, and `inference.out_dir` if needed.
+2. Download the prepared RealSee3D inference and evaluation data:
 
-3. Launch inference with one of the provided scripts:
+[Download](https://huggingface.co/datasets/JiaJinrang/PanoWorld/tree/main)
+
+3. Check the selected config and update `data.root_data_dir`, `data.data_path`, `inference.ckpt_path`, and `inference.out_dir` if needed.
+
+4. Launch inference with one of the provided scripts:
 
 ```bash
 bash infer_512.sh
@@ -67,6 +73,20 @@ You can also run inference directly with:
 ```bash
 python inference.py --config configs/inference_1024_512.yaml
 ```
+
+5. If you would like to run inference on your own data, please refer to the dataset format description:
+
+[Download](https://huggingface.co/datasets/JiaJinrang/PanoWorld)
+
+You may reorganize your own data into the same format and modify `dataset.py` and other related files accordingly.
+
+#### PanoWorld 2D Generator
+
+Coming Soon
+
+#### PanoWorld
+
+Coming Soon
 
 ### Released Files
 
