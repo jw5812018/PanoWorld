@@ -147,24 +147,24 @@ You may also use other viewers such as `SuperSplat`.
 <table align="center">
   <tr>
     <td align="center" width="25%">
-      <video src="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo1_web.mp4" poster="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/images/panoworld-lrm-demo1-poster.jpg" controls muted loop playsinline preload="metadata" width="100%">
-        <a href="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo1_web.mp4">Video 1</a>
-      </video>
+      <a href="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo1_web.mp4">
+        <img src="assets/gifs/panoworld-lrm-demo1.gif" alt="PanoWorld-LRM Demo 1" width="100%">
+      </a>
     </td>
     <td align="center" width="25%">
-      <video src="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo2_web.mp4" poster="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/images/panoworld-lrm-demo2-poster.jpg" controls muted loop playsinline preload="metadata" width="100%">
-        <a href="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo2_web.mp4">Video 2</a>
-      </video>
+      <a href="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo2_web.mp4">
+        <img src="assets/gifs/panoworld-lrm-demo2.gif" alt="PanoWorld-LRM Demo 2" width="100%">
+      </a>
     </td>
     <td align="center" width="25%">
-      <video src="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo3_web.mp4" poster="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/images/panoworld-lrm-demo3-poster.jpg" controls muted loop playsinline preload="metadata" width="100%">
-        <a href="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo3_web.mp4">Video 3</a>
-      </video>
+      <a href="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo3_web.mp4">
+        <img src="assets/gifs/panoworld-lrm-demo3.gif" alt="PanoWorld-LRM Demo 3" width="100%">
+      </a>
     </td>
     <td align="center" width="25%">
-      <video src="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo4_web.mp4" poster="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/images/panoworld-lrm-demo4-poster.jpg" controls muted loop playsinline preload="metadata" width="100%">
-        <a href="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo4_web.mp4">Video 4</a>
-      </video>
+      <a href="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo4_web.mp4">
+        <img src="assets/gifs/panoworld-lrm-demo4.gif" alt="PanoWorld-LRM Demo 4" width="100%">
+      </a>
     </td>
   </tr>
 </table>
