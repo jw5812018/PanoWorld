@@ -74,7 +74,7 @@ python inference.py --config configs/inference_1024_512.yaml
 
 5. If you would like to run inference on your own data, please refer to the dataset format description ([Here](https://huggingface.co/datasets/JiaJinrang/PanoWorld)):
 
-You may reorganize your own data into the same format and modify `dataset.py` and other related files accordingly.
+You may reorganize your own data into the same format or modify `dataset.py` and other related files to adapt to your data.
 
 #### PanoWorld 2D Generator
 
