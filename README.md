@@ -86,12 +86,12 @@ python inference.py --config configs/inference_1024_512.yaml
 
 ## Data
 
-| Split | Dataset | Link | Notes |
-| --- | --- | --- | --- |
-| Training | 3D Front | [Download](https://tianchi.aliyun.com/dataset/65347) | Data processing scripts: Coming Soon |
-| Training | RealSee3D | [realsee-developer/RealSee3D](https://github.com/realsee-developer/RealSee3D) | Data processing scripts: Coming Soon |
-| Evaluation | RealSee3D | [Hugging Face Dataset](https://huggingface.co/datasets/JiaJinrang/PanoWorld/tree/main) | Released, including `50` RealSee3D scenes |
-| Evaluation | Private scene data | Coming Soon | Coming Soon |
+| Split | Dataset | Usage | Link | Notes |
+| --- | --- | --- | --- | --- |
+| Training | 3D Front | Train LRM and 2D generator | [Download](https://tianchi.aliyun.com/dataset/65347) | Data processing scripts: Coming Soon |
+| Training | RealSee3D | Train LRM and 2D generator | [Download](https://github.com/realsee-developer/RealSee3D) | Data processing scripts: Coming Soon |
+| Evaluation | RealSee3D | Evaluate LRM | [Download](https://huggingface.co/datasets/JiaJinrang/PanoWorld/tree/main) | Released, including `50` RealSee3D scenes |
+| Evaluation | Private scene data | Evaluate PanoWorld panorama synthesis | Coming Soon | Coming Soon |
 
 ## Citation
 
