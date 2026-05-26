@@ -142,6 +142,33 @@ You may also use other viewers such as `SuperSplat`.
 
 <p align="center"><sub><em>Tested on NVIDIA H200. The paper uses <code>1024x512</code> for experiments and metric computation.</em></sub></p>
 
+<p align="center"><strong>PanoWorld-LRM Whole House Reconstruction Results (12 views input)</strong></p>
+
+<table align="center">
+  <tr>
+    <td align="center" width="25%">
+      <video src="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo1_web.mp4" poster="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/images/panoworld-lrm-demo1-poster.jpg" controls muted loop playsinline preload="metadata" width="100%">
+        <a href="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo1_web.mp4">Video 1</a>
+      </video>
+    </td>
+    <td align="center" width="25%">
+      <video src="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo2_web.mp4" poster="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/images/panoworld-lrm-demo2-poster.jpg" controls muted loop playsinline preload="metadata" width="100%">
+        <a href="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo2_web.mp4">Video 2</a>
+      </video>
+    </td>
+    <td align="center" width="25%">
+      <video src="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo3_web.mp4" poster="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/images/panoworld-lrm-demo3-poster.jpg" controls muted loop playsinline preload="metadata" width="100%">
+        <a href="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo3_web.mp4">Video 3</a>
+      </video>
+    </td>
+    <td align="center" width="25%">
+      <video src="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo4_web.mp4" poster="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/images/panoworld-lrm-demo4-poster.jpg" controls muted loop playsinline preload="metadata" width="100%">
+        <a href="https://raw.githubusercontent.com/jjrCN/PanoWorld/main/assets/videos/panoworld-lrm-demo4_web.mp4">Video 4</a>
+      </video>
+    </td>
+  </tr>
+</table>
+
 #### PanoWorld 2D Generator
 
 Coming Soon
