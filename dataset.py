@@ -23,32 +23,18 @@ def get_local_rotation_matrix(x_angle, y_angle, z_angle):
     local_c2w[:3, :3] = r_matrix
     return local_c2w
 
-def crop_and_resize(image, depth, target_size, fxfycxcy, square_crop):
+def crop_and_resize(target_size, fxfycxcy, square_crop):
     target_width, target_height = target_size
     fx, fy, cx, cy, h, w = fxfycxcy
 
     # squre crop
-    croped_depth = None
     if square_crop:
         min_size = min(w, h)
         start_h = (h - min_size) // 2
         start_w = (w - min_size) // 2
-        croped_image = image[start_h:start_h+min_size, start_w:start_w+min_size, :]
-        if depth is not None:
-            croped_depth = depth[start_h:start_h+min_size, start_w:start_w+min_size, :]
         cx -= start_w
         cy -= start_h
-    else:
-        croped_image = image
-        if depth is not None:
-            croped_depth = depth
-    
-    resized_image = cv2.resize(croped_image, (target_width, target_height))
-    if croped_depth is not None:
-        resized_depth = cv2.resize(croped_depth, (target_width, target_height), interpolation=cv2.INTER_NEAREST)
-        resized_depth = resized_depth[:, :, np.newaxis]
-    else:
-        resized_depth = None
+
 
     if square_crop:
         min_size = min(w, h)
@@ -62,7 +48,7 @@ def crop_and_resize(image, depth, target_size, fxfycxcy, square_crop):
         new_cx = cx * (target_width / w)
         new_cy = cy * (target_height / h)
         
-    return resized_image, resized_depth, [new_fx, new_fy, new_cx, new_cy]
+    return [new_fx, new_fy, new_cx, new_cy]
 
 def resize_pano(image, depth, mask, target_size):
     target_width, target_height = target_size
@@ -88,7 +74,6 @@ class Dataset(Dataset):
         self.evaluation = config.get("evaluation", False)
         self.viewpoint_max_view = config.data.get("viewpoint_max_view", 12)
         self.view_select_dict = config.data.get("view_select_dict", {})
-        self.sample_target_images = config.data.get("sample_target_images", 6)
 
         if self.evaluation and "data_eval" in config:
             self.config.data.update(config.data_eval)
@@ -112,8 +97,6 @@ class Dataset(Dataset):
 
     def process_frames(self, frames):
         fxfycxcy_list = []
-        image_list = []
-        depth_list = []
 
         resize_h = self.config.data.get("resize_h", -1)
         patch_size = self.config.model.patch_size * self.config.model.get("patch_factor", 2)
@@ -123,30 +106,16 @@ class Dataset(Dataset):
         resize_h = int(round(resize_h / patch_size)) * patch_size # 
         resize_w = int(round(resize_w / patch_size)) * patch_size # 
         for frame in frames:
-            image = np.array(Image.open(os.path.join(frame["image_base_dir"], frame["file_path"])))
-            if "depth_file_path" in frame and os.path.exists(os.path.join(frame["image_base_dir"], frame["depth_file_path"])) and frame["depth_file_path"] != "":
-                # Load the perspective depth map (Z-plane depth)
-                depth = np.array(Image.open(os.path.join(frame["image_base_dir"], frame["depth_file_path"]))) # [h, w]
-                depth = depth[:, :, np.newaxis] # [h, w, 1]
-            else:
-                h, w = image.shape[:2]
-                depth = np.zeros((h, w, 1), dtype=image.dtype)
-            depth_scale = frame["depth_scale"]
             fxfycxcyhw = [frame["fx"], frame["fy"], frame["cx"], frame["cy"], frame["h"], frame["w"]]
-            image, depth, fxfycxcy = crop_and_resize(image, depth, (resize_w, resize_h), fxfycxcyhw, square_crop)
-            depth = depth * 1.0 / depth_scale # Convert back to meters
+            fxfycxcy = crop_and_resize((resize_w, resize_h), fxfycxcyhw, square_crop)
             fxfycxcy_list.append(fxfycxcy)
-            image_list.append(torch.from_numpy(image / 255.0).permute(2, 0, 1).float())  # (3, resize_h, resize_w)
-            depth_list.append(torch.from_numpy(depth).permute(2, 0, 1).float())  # (1, resize_h, resize_w)
         intrinsics = torch.tensor(fxfycxcy_list, dtype=torch.float32)  # (num_frames, 4)
-        images = torch.stack(image_list, dim=0)
-        depths = torch.stack(depth_list, dim=0)
         c2ws = np.stack([np.array(frame["c2w"]) for frame in frames])
         c2ws = torch.from_numpy(c2ws).float()
         c2w_bucket = repeat(torch.eye(4, dtype=torch.float32), 'h w -> b h w', b=c2ws.shape[0]).clone()
         c2w_bucket[:, :3] = c2ws[:, :3]  # (num_frames, 4, 4)
 
-        return images, depths, intrinsics, c2w_bucket
+        return intrinsics, c2w_bucket
 
     def process_pano_frames(self, frames):
         image_list = []
@@ -181,7 +150,9 @@ class Dataset(Dataset):
                     mask[:int(h//5), :, :] = 0
                     mask[int(4*h//5):, :, :] = 0
             
-            depth_scale = frame["depth_scale"]
+            depth_scale = 1.0
+            if "depth_scale" in frame:
+                depth_scale = frame["depth_scale"]
             image, depth, mask = resize_pano(image, depth, mask, (resize_w_pano, resize_h_pano))
             depth = depth * 1.0 / depth_scale # Convert back to meters
 
@@ -207,74 +178,31 @@ class Dataset(Dataset):
             data_path_class = data_path.split("/")[-1]
 
             viewpoints_path = None
-            scene_name_list = []
-            target_frames_view_name = "None"
+            view_name_list = []
             room_id_list = []
-            if data_path_class == "map.json" or data_path_class == "map_eval_12.json" or data_path_class == "map_eval.json" or data_path_class == "map_test.json":
+            if data_path_class == "map.json" or data_path_class == "map_eval_12.json" or data_path_class == "map_eval.json":
                 map_json = json.load(open(data_path, 'r'))
                 room_id = 0
                 for map_key in map_json.keys():
-                    scene_name_list.append(map_key)
+                    view_name_list.append(map_key)
                     room_id_list.append(room_id)
                     for map_value in map_json[map_key]:
-                        scene_name_list.append(map_value)
+                        view_name_list.append(map_value)
                         room_id_list.append(room_id)
                     room_id += 1
                 viewpoints_path = os.path.dirname(data_path)
             else:
                 print(f"error loading data_path_class: {data_path_class}")
                 return self.__getitem__(random.randint(0, len(self) - 1))
-
-            pose_variations = [(0, 0, 0), (0, -270, 0), (0, -180, 0), (0, -90, 0), (90, 0, 0), (-90, 0, 0)]
-            # Load all perspective-view frames
-            frames = []
-            for scene_name in scene_name_list:
-                data_json_path = os.path.join(viewpoints_path, "viewpoints", scene_name, "transforms.json")
-                data_json = json.load(open(data_json_path, 'r'))
-                frames_perceptive_all = []
-                for i in range(len(data_json['frames'])):
-                    frame_data = data_json['frames'][i]
-                    frame_data["fx"] = data_json["fl_x"]
-                    frame_data["fy"] = data_json["fl_y"]
-                    frame_data["cx"] = data_json["cx"]
-                    frame_data["cy"] = data_json["cy"]
-                    frame_data["h"] = data_json["h"]
-                    frame_data["w"] = data_json["w"]
-                    frame_data["c2w"] = np.array(frame_data["transform_matrix"])
-                    if "depth_scale" in data_json:
-                        frame_data["depth_scale"] = data_json["depth_scale"]
-                    else:
-                        frame_data["depth_scale"] = 1.0
-                    frame_data["image_base_dir"] = os.path.join(viewpoints_path, "viewpoints", scene_name)
-                    frames_perceptive_all.append(frame_data)
-
-                # Each panorama uses a fixed set of 6 perspective views (currently hard-coded)
-                idx_sample = np.random.choice(len(frames_perceptive_all), self.sample_target_images, replace=False)
-                idx_sample = np.sort(idx_sample)
-                frames_perceptive_sample = [frames_perceptive_all[i] for i in idx_sample]
-                for i in range(len(frames_perceptive_sample)):
-                    local_rot_mat = get_local_rotation_matrix(*(pose_variations[i]))
-                    base_c2w = np.loadtxt(os.path.join(viewpoints_path, "viewpoints", scene_name, "extrinsics.txt"))
-                    new_c2w = base_c2w @ local_rot_mat
-                    frames_perceptive_sample[i]["c2w"] = new_c2w
-                frames.extend(frames_perceptive_sample)
             
             # Load all panorama frames
             frames_pano = []
-            for scene_name in scene_name_list:
+            for view_name in view_name_list:
                 frame_pano = {}
-                frame_pano["c2w"] = np.loadtxt(os.path.join(viewpoints_path, "viewpoints", scene_name, "extrinsics.txt"))
-
-                depth_scale_path = os.path.join(viewpoints_path, "viewpoints", scene_name, "depth_scale.txt")
-                if os.path.exists(depth_scale_path):
-                    frame_pano["depth_scale"] = np.loadtxt(depth_scale_path)
-                else:
-                    frame_pano["depth_scale"] = 1.0
-                    
-                frame_pano["image_path"] = os.path.join(viewpoints_path, "viewpoints", scene_name, "panoImage_1600.jpg")
-                frame_pano["depth_path"] = os.path.join(viewpoints_path, "viewpoints", scene_name, "depth_image.png")
-                frame_pano["mask_path"] = os.path.join(viewpoints_path, "viewpoints", scene_name, "pano_mask.png")
-                frame_pano["view_name"] = scene_name
+                frame_pano["c2w"] = np.loadtxt(os.path.join(viewpoints_path, "viewpoints", view_name, "extrinsics.txt"))
+                frame_pano["image_path"] = os.path.join(viewpoints_path, "viewpoints", view_name, "panoImage_1600.jpg")
+                frame_pano["mask_path"] = os.path.join(viewpoints_path, "viewpoints", view_name, "pano_mask.png")
+                frame_pano["view_name"] = view_name
                 frames_pano.append(frame_pano)
             
             num_input_frames = len(frames_pano)
@@ -286,13 +214,6 @@ class Dataset(Dataset):
             random_indices = np.random.choice(len(input_frames_pano_idx), num_input_frames, replace=False)
             input_frame_idx = [input_frames_pano_idx[i] for i in random_indices]
             input_frame_room_id = [room_id_list[i] for i in random_indices]
-
-            # get target frames range
-            target_frames_idx = list(range(0, len(frames))) # Perspective views
-            target_frame_idx = []
-            for input_idx in input_frame_idx:
-                for i in range(self.sample_target_images):
-                    target_frame_idx.append(self.sample_target_images * input_idx + i)
 
             input_frames = [frames_pano[i] for i in input_frame_idx]
             input_frames_view_name = ""
@@ -306,8 +227,28 @@ class Dataset(Dataset):
             if succ_status == False:
                 print(f"error succ_status: {succ_status}, data_path: {data_path}")
                 return self.__getitem__(random.randint(0, len(self) - 1))
-            target_frames = [frames[i] for i in target_frame_idx]
-            target_images, target_depths, target_intr, target_c2ws = self.process_frames(target_frames)
+
+            pose_variations = [(0, 0, 0), (0, -270, 0), (0, -180, 0), (0, -90, 0), (90, 0, 0), (-90, 0, 0)]
+            # Load all perspective-view frames
+            frames = []
+            for input_pano_frame in input_frames:
+                view_name = input_pano_frame["view_name"]
+                for angles in pose_variations:
+                    local_rot_mat = get_local_rotation_matrix(*angles)
+                    base_c2w = np.loadtxt(os.path.join(viewpoints_path, "viewpoints", view_name, "extrinsics.txt"))
+                    new_c2w = base_c2w @ local_rot_mat
+                    frame_data = {}
+                    frame_data["c2w"] = new_c2w
+                    frame_data["fx"] = self.config.data.resize_h / 2
+                    frame_data["fy"] = self.config.data.resize_h / 2
+                    frame_data["cx"] = self.config.data.resize_h / 2
+                    frame_data["cy"] = self.config.data.resize_h / 2
+                    frame_data["h"] = self.config.data.resize_h
+                    frame_data["w"] = self.config.data.resize_h
+                    frames.append(frame_data)
+            num_target_frames = len(frames)
+
+            target_intr, target_c2ws = self.process_frames(frames)
             
             # Reject scenes with excessively large translations
             if (target_c2ws[:, :3, 3] > 1e3).any():
@@ -390,28 +331,19 @@ class Dataset(Dataset):
                 assert False
             
             input_depths_mask = (input_depths > 0) * (input_masks > 0)
-            target_depths_mask = (target_depths > 0)
-            input_image_indices = torch.tensor(input_frame_idx).long().unsqueeze(-1)
-            target_image_indices = torch.tensor(target_frame_idx).long().unsqueeze(-1)
             input_room_ids = torch.tensor(input_frame_room_id).long()
 
             ret_dict = {
                 "input_images": input_images,  # (num_input, 3, resize_pano_h, resize_pano_w)
-                "target_images": target_images,  # (num_target, 3, resize_h, resize_w)
                 "input_depths": input_depths, # (num_input, 1, resize_pano_h, resize_pano_w)
                 "input_depths_mask": input_depths_mask, # (num_input, 1, resize_h, resize_w)
                 "input_masks": (input_masks > 0), # (num_input, 1, resize_pano_h, resize_pano_w)
-                "target_depths": target_depths, # (num_target, 1, resize_h, resize_w)
-                "target_depths_mask": target_depths_mask, # (num_target, 1, resize_h, resize_w)
-                "target_fxfycxcy": target_intr,  # (num_target, 4)
                 "input_c2ws": input_c2ws,  # (num_input, 4, 4)
+                "target_fxfycxcy": target_intr,  # (num_target, 4)
                 "target_c2ws": target_c2ws, # (num_target, 4, 4)
-                "input_image_indexs": input_image_indices,
                 "input_room_ids": input_room_ids,
-                "target_image_indexs": target_image_indices,
                 "input_target_scene_name": viewpoints_path.split("/")[-1],
                 "input_view_names": input_frames_view_name,
-                "target_view_names": target_frames_view_name,
             }
 
         except:

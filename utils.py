@@ -379,13 +379,13 @@ def prepare_viewer(result, dirname, sh_degree):
     cameras_towrite= []
     for b in range(input_dict.input_c2ws.shape[0]):
         for i in range(input_dict.input_c2ws.shape[1]):
-            width = target_dict.target_images[0][0].shape[-1]
-            height = target_dict.target_images[0][0].shape[-2]
             fx = target_dict.target_fxfycxcy[0][0][0].item()
             fy = target_dict.target_fxfycxcy[0][0][1].item()
             cx = target_dict.target_fxfycxcy[0][0][2].item()
             cy = target_dict.target_fxfycxcy[0][0][3].item()
             c2w  = input_dict.input_c2ws[b][i]
+            width = int(fx) * 2
+            height = int(fy) * 2
             cam = {'id':b*input_dict.input_c2ws.shape[1]+i, 'img_name':f'img_{b}_{i}.png',
                 'width': width,
                 'height': height,

@@ -47,7 +47,6 @@ def normalize_depth(depth_map):
 def export_results(
     result: edict,
     out_dir: str, 
-    sample_target_images: int = 6,
     uid: int = 0
 ):
     """
@@ -70,27 +69,13 @@ def export_results(
     for batch_idx in range(input_data["input_images"].size(0)):
         scene_name = input_data["input_target_scene_name"][batch_idx]
         inputs_view_name = input_data["input_view_names"][batch_idx]
-        target_view_name = target_data["target_view_names"][batch_idx]
-        if target_view_name != "None":
-            sample_dir = os.path.join(out_dir, f"{scene_name}/{inputs_view_name}/{target_view_name}")
-        else:
-            sample_dir = os.path.join(out_dir, f"{scene_name}/{inputs_view_name}")
-        metrics_dir = os.path.join(out_dir, f"{scene_name}/{inputs_view_name}")
+
+        sample_dir = os.path.join(out_dir, f"{scene_name}/{inputs_view_name}")
+        inputs_view_name_list = inputs_view_name.split("-")
+
         os.makedirs(sample_dir, exist_ok=True)
-        os.makedirs(metrics_dir, exist_ok=True)
-        
-        # Get target view indices
-        target_indices = target_data["target_image_indexs"][batch_idx, :].cpu().numpy().squeeze(-1).astype(int)
-        input_indices = input_data["input_image_indexs"][batch_idx, :].cpu().numpy().squeeze(-1).astype(int)
-        target_indices_path = os.path.join(sample_dir, "target_indices.txt")
-        input_indices_path = os.path.join(sample_dir, "input_indices.txt")
-        np.savetxt(target_indices_path, target_indices, fmt="%d")
-        np.savetxt(input_indices_path, input_indices, fmt="%d")
         os.makedirs(os.path.join(sample_dir, "target_rendering"), exist_ok=True)
         os.makedirs(os.path.join(sample_dir, "target_rendering_depth"), exist_ok=True)
-        os.makedirs(os.path.join(sample_dir, "input_image"), exist_ok=True)
-        os.makedirs(os.path.join(sample_dir, "input_depth"), exist_ok=True)
-        os.makedirs(os.path.join(sample_dir, "input_rendering_z_depth"), exist_ok=True)
 
         faces_np = [] # Collect the 6 cube faces converted to NumPy arrays
         faces_depth_np = []
@@ -111,28 +96,9 @@ def export_results(
                 faces_np_pano_depth = [faces_depth_np[i_pano*6+i] for i in range(6)]
                 panorama_np = py360convert.c2e(faces_np_pano, h=pano_height, w=pano_width, cube_format='list')
                 panorama_depth_np = py360convert.c2e(faces_np_pano_depth, h=pano_height, w=pano_width, cube_format='list')
-                panorama_path = os.path.join(sample_dir, "target_rendering", f"{i_pano}.png")
-                panorama_depth_path = os.path.join(sample_dir, "target_rendering_depth", f"{i_pano}.png")
+                panorama_path = os.path.join(sample_dir, "target_rendering", inputs_view_name_list[i_pano] + ".png")
+                panorama_depth_path = os.path.join(sample_dir, "target_rendering_depth", inputs_view_name_list[i_pano] + ".png")
                 Image.fromarray(panorama_np).save(panorama_path)
                 cv2.imwrite(panorama_depth_path, panorama_depth_np)
                 with open(os.path.join(sample_dir, "rendering_depth_scale.txt"), "w", encoding="utf-8") as f:
                     f.write("2180")
-               
-        
-
-        for i in range(t):
-            depth_input_path = os.path.join(sample_dir, "input_depth", f"{i}.png")
-            depth_input_rendering_path = os.path.join(sample_dir, "input_rendering_z_depth", f"{i}.png")
-            image_input_path = os.path.join(sample_dir, "input_image", f"{i}.png")
-            
-            depth_input_norm = normalize_depth(input_data["input_depths"][batch_idx, i].unsqueeze(0).unsqueeze(0)).squeeze(0)
-            depth_input_rendering_norm = normalize_depth(rendered_input_depth[batch_idx, i].unsqueeze(0).unsqueeze(0)).squeeze(0)
-            torchvision.utils.save_image(
-                depth_input_norm, depth_input_path
-            )
-            torchvision.utils.save_image(
-                depth_input_rendering_norm, depth_input_rendering_path
-            )
-            torchvision.utils.save_image(
-                input_data["input_images"][batch_idx, i], image_input_path
-            )

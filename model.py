@@ -279,25 +279,18 @@ class PanoWorldLRM(nn.Module):
         # Do not autocast during the data processing stage
         with torch.autocast(device_type="cuda", enabled=False), torch.no_grad():
             b_in, v_in, _, h_in, w_in = input_data_dict["input_images"].size() # Panorama inputs
-            b_target, t_target, _, h_target, w_target = target_data_dict["target_images"].size() # Perspective targets
-            # i_fxfycxcy = input_data_dict["fxfycxcy"]
-            i_c2w = input_data_dict["input_c2ws"]
-
-            t_fxfycxcy = target_data_dict["target_fxfycxcy"]
             t_c2w = target_data_dict["target_c2ws"]
-
+            b_target = b_in
+            t_target = t_c2w[0].shape[0]
+            h_target = self.config.data.resize_h
+            w_target = self.config.data.resize_h
+            i_c2w = input_data_dict["input_c2ws"]
+            t_fxfycxcy = target_data_dict["target_fxfycxcy"]
+            
             ray_o, ray_d = compute_plucmap_pano(i_c2w, h_in, w_in)
             o_cross_d = torch.cross(ray_o, ray_d, dim=2)
             i_normalized_image = input_data_dict["input_images"] * 2.0 - 1.0
             i_raymap_images = torch.concat([ray_o, ray_d, o_cross_d, i_normalized_image], dim=2)
-
-            # Ks = torch.eye(3, dtype=i_c2w.dtype, device=i_c2w.device).unsqueeze(0).unsqueeze(0)
-            # Ks = Ks.repeat(b, v, 1, 1).clone() 
-            # Ks[:, :, 0, 0] = i_fxfycxcy[:, :, 0]
-            # Ks[:, :, 1, 1] = i_fxfycxcy[:, :, 1]
-            # Ks[:, :, 0, 2] = i_fxfycxcy[:, :, 2]
-            # Ks[:, :, 1, 2] = i_fxfycxcy[:, :, 3]
-            # Ks[:, :, 2, 2] = 1.0
 
             i_w2c = torch.inverse(i_c2w)
 

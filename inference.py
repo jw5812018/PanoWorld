@@ -105,7 +105,6 @@ def run_inference(config):
             export_results(
                 result,
                 config.inference.out_dir,
-                sample_target_images=sample_target_images,
                 uid=uid,
             )
 
