@@ -82,7 +82,7 @@ def export_results(
         for i in range(v):
             img_tensor = rendered_image[batch_idx, i].detach().cpu().clamp(0, 1)
             depth_tensor = rendered_depth[batch_idx, i].detach().cpu().clamp(0, 30)
-            depth_np = ((depth_tensor.permute(1, 2, 0).numpy()) * 2180).astype(np.uint16)
+            depth_np = depth_tensor.permute(1, 2, 0).numpy()
             img_np = (img_tensor.permute(1, 2, 0).numpy() * 255).astype(np.uint8)
             faces_np.append(img_np)
             faces_depth_np.append(depth_np)
@@ -96,11 +96,11 @@ def export_results(
                 faces_np_pano_depth = [faces_depth_np[i_pano*6+i] for i in range(6)]
                 panorama_np = py360convert.c2e(faces_np_pano, h=pano_height, w=pano_width, cube_format='list')
                 panorama_depth_np = py360convert.c2e(faces_np_pano_depth, h=pano_height, w=pano_width, cube_format='list')
-                depth_scale = int(65535.0 / panorama_depth_np.max())
+                depth_scale = int(65535.0 / panorama_depth_np.max() - 0.5)
                 panorama_depth_np = (panorama_depth_np*depth_scale).astype(np.uint16)
                 panorama_path = os.path.join(sample_dir, "target_rendering", inputs_view_name_list[i_pano] + ".png")
                 panorama_depth_path = os.path.join(sample_dir, "target_rendering_depth", inputs_view_name_list[i_pano] + ".png")
                 Image.fromarray(panorama_np).save(panorama_path)
                 cv2.imwrite(panorama_depth_path, panorama_depth_np)
                 with open(os.path.join(sample_dir, "rendering_depth_scale.txt"), "w", encoding="utf-8") as f:
-                    f.write(str(depth_scale*2180))
+                    f.write(str(depth_scale))
