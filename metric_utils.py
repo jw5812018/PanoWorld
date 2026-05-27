@@ -96,9 +96,11 @@ def export_results(
                 faces_np_pano_depth = [faces_depth_np[i_pano*6+i] for i in range(6)]
                 panorama_np = py360convert.c2e(faces_np_pano, h=pano_height, w=pano_width, cube_format='list')
                 panorama_depth_np = py360convert.c2e(faces_np_pano_depth, h=pano_height, w=pano_width, cube_format='list')
+                depth_scale = int(65535.0 / panorama_depth_np.max())
+                panorama_depth_np = (panorama_depth_np*depth_scale).astype(np.uint16)
                 panorama_path = os.path.join(sample_dir, "target_rendering", inputs_view_name_list[i_pano] + ".png")
                 panorama_depth_path = os.path.join(sample_dir, "target_rendering_depth", inputs_view_name_list[i_pano] + ".png")
                 Image.fromarray(panorama_np).save(panorama_path)
                 cv2.imwrite(panorama_depth_path, panorama_depth_np)
                 with open(os.path.join(sample_dir, "rendering_depth_scale.txt"), "w", encoding="utf-8") as f:
-                    f.write("2180")
+                    f.write(str(depth_scale))
