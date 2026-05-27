@@ -82,7 +82,7 @@ def export_results(
         for i in range(v):
             img_tensor = rendered_image[batch_idx, i].detach().cpu().clamp(0, 1)
             depth_tensor = rendered_depth[batch_idx, i].detach().cpu().clamp(0, 30)
-            depth_np = ((depth_tensor.permute(1, 2, 0).numpy()) * 2180).astype(np.uint16)
+            depth_np = ((depth_tensor.permute(1, 2, 0).numpy())).astype(np.uint16)
             img_np = (img_tensor.permute(1, 2, 0).numpy() * 255).astype(np.uint8)
             faces_np.append(img_np)
             faces_depth_np.append(depth_np)
