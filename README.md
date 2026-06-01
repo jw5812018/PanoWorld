@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://arxiv.org/pdf/2605.17916"><img alt="arXiv" src="https://img.shields.io/badge/arXiv-2605.17916-b31b1b.svg"></a>
+  <a href="https://arxiv.org/abs/2605.17916"><img alt="arXiv" src="https://img.shields.io/badge/arXiv-2605.17916-b31b1b.svg"></a>
   <a href="https://jjrcn.github.io/PanoWorld-project-home/"><img alt="Project Page" src="https://img.shields.io/badge/Project-Page-2f80ed.svg"></a>
   <a href="https://huggingface.co/spaces/JiaJinrang/PanoWorld-LRM"><img alt="PanoWorld-LRM Space" src="https://img.shields.io/badge/HF%20Space-PanoWorld--LRM-f59e0b.svg"></a>
   <a href="https://huggingface.co/spaces/JiaJinrang/PanoWorld-VR-Tour"><img alt="PanoWorld-VR-Tour Space" src="https://img.shields.io/badge/HF%20Space-VR--Tour-fbbf24.svg"></a>
