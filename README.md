@@ -15,7 +15,7 @@
   <a href="https://huggingface.co/spaces/JiaJinrang/PanoWorld-VR-Tour"><img alt="PanoWorld-VR-Tour Space" src="https://img.shields.io/badge/HF%20Space-VR--Tour-fbbf24.svg"></a>
   <a href="https://huggingface.co/JiaJinrang/PanoWorld/tree/main"><img alt="Model" src="https://img.shields.io/badge/Model-HuggingFace-f97316.svg"></a>
   <a href="https://huggingface.co/datasets/JiaJinrang/PanoWorld"><img alt="Dataset" src="https://img.shields.io/badge/Dataset-HuggingFace-10b981.svg"></a>
-  <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/License-MIT-green.svg"></a>
+  <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"></a>
 </p>
 
 PanoWorld is a generative spatial world model for consistent whole-house panorama synthesis. Given a floorplan and a style reference, it autoregressively generates node-based 360-degree panoramas that align with practical VR-tour navigation while preserving cross-view geometry and material consistency across an entire house.
@@ -195,7 +195,9 @@ If you find this project useful, please cite:
 
 ## License
 
-This project is released under the MIT License. See [LICENSE](LICENSE) for details.
+This project is released under the Apache 2.0 License. See [LICENSE](LICENSE) for details.
+
+Third-party code included in this repository may retain its original license notices. For example, `prope_custom.py` preserves the upstream MIT license notice from its original authors.
 
 ## Acknowledgements
 
